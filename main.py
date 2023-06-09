@@ -1,8 +1,11 @@
 import cv2
 import mediapipe as mp
+import pyautogui
 
 hand_detector = mp.solutions.hands.Hands()
 drawing_utils = mp.solutions.drawing_utils
+# We will get screen size from pyautogui
+screen_width, screen_height = pyautogui.size()
 
 capture = cv2.VideoCapture(0)
 
@@ -25,6 +28,13 @@ while True:
 
                 if id == 8:
                     cv2.circle(img=frame, center=(x, y), radius=40, color=(0, 255, 255))
+                    index_x = screen_width / frame_width * x
+                    index_y = screen_height / frame_height * y
+                    pyautogui.moveTo(index_x, index_y)  # Through x and y we can move the mouse cursor
+                if id == 4:
+                    cv2.circle(img=frame, center=(x, y), radius=40, color=(0, 255, 255))
+                    thumb_x = screen_width / frame_width * x
+                    thumb_y = screen_height / frame_height * y
 
     cv2.imshow('AI Virtual Mouse', frame)
     cv2.waitKey(1)
