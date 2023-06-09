@@ -9,6 +9,8 @@ screen_width, screen_height = pyautogui.size()
 
 capture = cv2.VideoCapture(0)
 
+index_y = 0
+
 while True:
     _, frame = capture.read()
     frame = cv2.flip(frame, 1)  # X -> frame and Y-> 1
@@ -24,7 +26,7 @@ while True:
             for id, landmark in enumerate(landmarks):
                 x = int(landmark.x * frame_width)  # Horizontal
                 y = int(landmark.y * frame_height)  # Vertical
-                print(x, y)
+                # print(x, y)
 
                 if id == 8:
                     cv2.circle(img=frame, center=(x, y), radius=40, color=(0, 255, 255))
@@ -35,6 +37,11 @@ while True:
                     cv2.circle(img=frame, center=(x, y), radius=40, color=(0, 255, 255))
                     thumb_x = screen_width / frame_width * x
                     thumb_y = screen_height / frame_height * y
+                    print('outside', abs(index_y - thumb_y))
+                    if abs(index_y - thumb_y) < 50:
+                        pyautogui.click()
+                        pyautogui.sleep(1)
+                        # print('Clicked!')
 
     cv2.imshow('AI Virtual Mouse', frame)
     cv2.waitKey(1)
